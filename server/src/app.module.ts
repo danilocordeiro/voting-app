@@ -3,6 +3,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { typeOrmConfig } from './configs/database/database.config';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -10,9 +11,8 @@ import { typeOrmConfig } from './configs/database/database.config';
       typeOrmConfig
     ),
     GraphQLModule.forRoot({
-      autoSchemaFile: true,
-      playground: true,
-      introspection: true
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      playground: true
     }), UsersModule,
   ],
 })

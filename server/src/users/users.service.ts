@@ -1,11 +1,23 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
+import { User } from './entities/user.entity';
+import { UsersRepository } from './users.repository';
 
 @Injectable()
 export class UsersService {
-  create(createUserInput: CreateUserInput) {
-    return 'This action adds a new user';
+
+  constructor(
+    private readonly usersRepository: UsersRepository
+  ){}
+
+  async create(createUserInput: CreateUserInput): Promise<User> {
+    const userExists = await this.usersRepository.findOne({where: {email: createUserInput.email }});
+    if(userExists) {
+      throw new InternalServerErrorException('Erro ao criar um usuário');
+    }
+    
+    return await this.usersRepository.save({...createUserInput});;
   }
 
   findAll() {
