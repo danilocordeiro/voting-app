@@ -3,13 +3,14 @@ import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
+import { ErrorResponse } from 'src/utils/error-response';
 
 @Resolver(() => User)
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
-  @Mutation(() => User)
-  async createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
+  @Mutation(() => [ErrorResponse], {nullable: true})
+  async createUser(@Args('createUserInput') createUserInput: CreateUserInput): Promise<object[] | null> {
     return this.usersService.create(createUserInput);
   }
 
