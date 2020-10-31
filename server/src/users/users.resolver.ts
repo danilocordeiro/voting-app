@@ -9,8 +9,8 @@ import { ErrorResponse } from 'src/utils/error-response';
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
-  @Mutation(() => [ErrorResponse], {nullable: true})
-  async createUser(@Args('createUserInput') createUserInput: CreateUserInput): Promise<object[] | null> {
+  @Mutation(() => [ErrorResponse], { nullable: true})
+  async createUser(@Args('createUserInput') createUserInput: CreateUserInput): Promise<ErrorResponse[] | null> {
     return this.usersService.create(createUserInput);
   }
 

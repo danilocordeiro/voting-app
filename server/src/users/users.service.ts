@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ErrorResponse } from 'src/utils/error-response';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
-import { User } from './entities/user.entity';
 import { UsersRepository } from './users.repository';
 
 @Injectable()
@@ -20,7 +19,7 @@ export class UsersService {
       return [
         {
           path: 'email',
-          message: 'invalid email or password',
+          message: 'invalid email or password'
         }
       ]
     }

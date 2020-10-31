@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { typeOrmConfig } from './configs/database/database.config';
 import { join } from 'path';
+import { GraphQLError, GraphQLFormattedError } from 'graphql';
 
 @Module({
   imports: [
@@ -12,7 +13,15 @@ import { join } from 'path';
     ),
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      playground: true
+      playground: true,
+      formatError: (error: GraphQLError) => {
+        console.log(error);
+        const graphQLFormattedError: GraphQLFormattedError = {
+          message: error.extensions.exception|| error.message,
+        };
+        return graphQLFormattedError;
+      },
+      
     }), UsersModule,
   ],
 })
