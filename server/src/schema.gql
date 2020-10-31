@@ -2,15 +2,15 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type ErrorResponse {
-  message: String!
-  path: String!
-}
-
 type User {
   id: ID!
   userName: String!
   email: String!
+}
+
+type ErrorResponse {
+  message: String!
+  path: String!
 }
 
 type Query {

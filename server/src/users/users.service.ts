@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ErrorResponse } from 'src/utils/error-response';
+import { confirmEmailLink } from '../utils/confirmEmailLink';
+import { ErrorResponse } from '../utils/error-response';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { UsersRepository } from './users.repository';
+import { sendEmail } from '../utils/sendEmail';
 
 @Injectable()
 export class UsersService {
@@ -24,7 +26,8 @@ export class UsersService {
       ]
     }
     
-    await this.usersRepository.save({...createUserInput});
+    const user = await this.usersRepository.save({...createUserInput});
+    await sendEmail(user.email, await confirmEmailLink(user.id))
     return null;
   }
 
