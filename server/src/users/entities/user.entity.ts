@@ -18,4 +18,7 @@ export class User {
   @Column()
   @HideField()
   password: string;
+
+  @Column({default: false})
+  confirmed: boolean;
 }

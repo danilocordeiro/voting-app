@@ -23,6 +23,6 @@ import { GraphQLError, GraphQLFormattedError } from 'graphql';
       },
       
     }), UsersModule,
-  ],
+  ]
 })
 export class AppModule {}

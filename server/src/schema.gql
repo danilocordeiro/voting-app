@@ -6,6 +6,7 @@ type User {
   id: ID!
   userName: String!
   email: String!
+  confirmed: Boolean!
 }
 
 type ErrorResponse {

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { confirmEmailLink } from '../utils/confirmEmailLink';
 import { ErrorResponse } from '../utils/error-response';
@@ -6,6 +6,9 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { UsersRepository } from './users.repository';
 import { sendEmail } from '../utils/sendEmail';
+import { redis } from '../configs/redis';
+import { Response } from 'express';
+import { CONFIRM_EMAIL_PREFIX } from 'src/constants';
 
 @Injectable()
 export class UsersService {
@@ -45,5 +48,15 @@ export class UsersService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  async confirmEmail(id: string, res: Response) {
+    const userId = await redis.get(`${CONFIRM_EMAIL_PREFIX}${id}`);
+    if(!userId) {
+      throw new NotFoundException();
+    }
+
+    await this.usersRepository.update({id: userId}, {confirmed: true});
+    res.send('ok');
   }
 }
